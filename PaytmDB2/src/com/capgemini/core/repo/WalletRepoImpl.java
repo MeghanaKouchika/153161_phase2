@@ -6,11 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.omg.IOP.TransactionService;
 
 import com.capgemini.core.beans.Customer;
 import com.capgemini.core.beans.Transactions;
@@ -20,10 +16,9 @@ import com.capgemini.core.util.DBUtil;
 
 public class WalletRepoImpl implements WalletRepo{
 	
-	List<Transactions> transactions;
 	
 	public WalletRepoImpl() {
-		transactions = new ArrayList<>();
+		
 	}
 
 	@Override
@@ -31,6 +26,7 @@ public class WalletRepoImpl implements WalletRepo{
 		try(Connection con = DBUtil.getConnection())
 		{
 			PreparedStatement pstm = con.prepareStatement("insert into person values(?,?,?)");
+			
 			pstm.setString(1, customer.getName());
 			pstm.setString(2, customer.getMobileNo());
 			pstm.setBigDecimal(3, customer.getWallet().getBalance());
@@ -122,8 +118,10 @@ public class WalletRepoImpl implements WalletRepo{
 		}
 	}
 	public List<Transactions> getTransaction(String mobileNo) {
+		List<Transactions> transactions = new ArrayList<>();
 		try(Connection con = DBUtil.getConnection()) 
 		{
+			
 			PreparedStatement pstm = con.prepareStatement("select * from transaction where mobileNo = ?");
 		
 			pstm.setString(1, mobileNo);
